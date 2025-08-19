@@ -29,7 +29,8 @@ function activate(context) {
     }
 
     const cwd = ws.uri.fsPath;
-    const scriptPath = path.join(context.extensionPath, "scripts", "make_structure.py");
+    // point to the python script in the extension root
+    const scriptPath = path.join(context.extensionPath, "make_structure.py");
     const outPath = path.join(cwd, "project_structure.txt");
 
     cp.execFile(py, [scriptPath], { cwd }, async (err, stdout, stderr) => {

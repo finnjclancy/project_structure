@@ -13,29 +13,38 @@ def parse_gitignore(gitignore_path: str) -> List[str]:
                     patterns.append(line)
     return patterns
 
-def should_ignore(rel_path: str, gitignore_patterns: List[str]) -> bool:
+def matches_any_pattern(rel_path: str, patterns: List[str]) -> bool:
     parts = Path(rel_path).parts
-    for pattern in gitignore_patterns:
+    base = os.path.basename(rel_path)
+
+    for pattern in patterns:
         p = pattern
+
+        # directory style pattern like foo/
         if p.endswith("/"):
             p = p[:-1]
             if any(part == p for part in parts):
                 return True
-        elif fnmatch.fnmatch(os.path.basename(rel_path), p):
+            if rel_path.startswith(p + os.sep):
+                return True
+
+        # file name pattern
+        if fnmatch.fnmatch(base, p):
             return True
-        elif fnmatch.fnmatch(rel_path, p):
+
+        # path pattern
+        if fnmatch.fnmatch(rel_path, p):
             return True
-        elif any(part == p for part in parts):
+
+        # exact segment match
+        if any(part == p for part in parts):
             return True
+
     return False
 
 def generate_project_structure(root_dir: str = ".", output_file: str = "project_structure.txt"):
     gitignore_path = os.path.join(root_dir, ".gitignore")
-    gitignore_patterns = parse_gitignore(gitignore_path)
-
-    always_ignore = [".git", ".gitignore", ".gitattributes", ".DS_Store", "Thumbs.db"]
-    gitignore_patterns.extend(always_ignore)
-    gitignore_patterns.append(os.path.basename(output_file))
+    git_patterns = parse_gitignore(gitignore_path)
 
     lines: List[str] = []
     root_abs = os.path.abspath(root_dir)
@@ -43,7 +52,20 @@ def generate_project_structure(root_dir: str = ".", output_file: str = "project_
     lines.append("=" * 50)
     lines.append("")
 
-    def add_to_structure(current_path: str, prefix: str = "", is_last: bool = True):
+    def should_skip(rel_path: str) -> bool:
+        # always include the .gitignore file itself
+        if rel_path.replace("\\", "/") == ".gitignore":
+            return False
+        # skip the output file
+        if rel_path.replace("\\", "/") == output_file:
+            return True
+        # skip the .git folder
+        if rel_path.startswith(".git/") or rel_path == ".git":
+            return True
+        # skip things matched by .gitignore patterns
+        return matches_any_pattern(rel_path, git_patterns)
+
+    def add_to_structure(current_path: str, prefix: str = ""):
         try:
             items = os.listdir(current_path)
         except PermissionError:
@@ -54,30 +76,30 @@ def generate_project_structure(root_dir: str = ".", output_file: str = "project_
 
         for item in items:
             item_path = os.path.join(current_path, item)
-            rel = os.path.relpath(item_path, root_dir)
-            if should_ignore(rel, gitignore_patterns):
+            rel = os.path.relpath(item_path, root_dir).replace("\\", "/")
+            if should_skip(rel):
                 continue
             if os.path.isdir(item_path):
                 dirs.append(item)
             else:
                 files.append(item)
 
-        dirs.sort()
-        files.sort()
+        dirs.sort(key=str.lower)
+        files.sort(key=str.lower)
         visible = dirs + files
 
-        for i, item in enumerate(visible):
+        for idx, item in enumerate(visible):
             item_path = os.path.join(current_path, item)
-            last_item = (i == len(visible) - 1)
+            last_item = (idx == len(visible) - 1)
 
-            connector = "└── " if is_last else "├── "
-            next_prefix = prefix + ("    " if is_last else "│   ")
+            connector = "└── " if last_item else "├── "
+            next_prefix = prefix + ("    " if last_item else "│   ")
 
             label = item + ("/" if os.path.isdir(item_path) else "")
             lines.append(f"{prefix}{connector}{label}")
 
             if os.path.isdir(item_path):
-                add_to_structure(item_path, next_prefix, last_item)
+                add_to_structure(item_path, next_prefix)
 
     add_to_structure(root_dir)
 
