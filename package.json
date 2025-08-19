@@ -2,7 +2,7 @@
     "name": "project-structure-tree",
     "displayName": "Directory Structure Generator",
     "publisher": "FinnClancy",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A VS Code extension that creates a project_structure.txt file in the root of your project. The file is a tree of your repo, respecting .gitignore entries.",
     "engines": {
       "vscode": "^1.90.0"
