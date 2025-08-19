@@ -1,0 +1,15 @@
+{
+    "name": "project_structure",
+    "displayName": "Project Structure",
+    "publisher": "yourname",
+    "version": "0.0.3",
+    "engines": { "vscode": "^1.90.0" },
+    "activationEvents": ["onCommand:projectStructure.generate"],
+    "main": "extension.js",
+    "contributes": {
+      "commands": [
+        { "command": "projectStructure.generate", "title": "Project Structure" }
+      ]
+    },
+    "categories": ["Other"]
+  }
