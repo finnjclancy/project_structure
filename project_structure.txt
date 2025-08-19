@@ -1,0 +1,13 @@
+project structure for: /Users/finnclancy/Projects/shitet/project_structure
+==================================================
+
+├── .vscode/
+│   └── launch.json
+├── images/
+│   └── icon.png
+├── extension.js
+├── LICENSE
+├── make_structure.py
+├── package.json
+├── project-structure-tree-0.0.4.vsix
+└── README.md
