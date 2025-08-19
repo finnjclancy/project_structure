@@ -18,7 +18,7 @@
 
 ### 3. if you cannot install (or find) through extension on VScode/Cursor <br>
 - download [project-structure-tree-0.0.4.vsix](/project-structure-tree-0.0.4.vsix) <br>
-- on VScode/Cursor press CMD + SHIFT + P <br>
+- on VScode/Cursor press "CMD + SHIFT + P" <br>
 - paste "Extensions: Install from VSIX" <br>
 - select the downloaded [project-structure-tree-0.0.4.vsix](/project-structure-tree-0.0.4.vsix) <br>
 - press install <br>
