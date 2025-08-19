@@ -3,13 +3,35 @@
     "displayName": "Project Structure",
     "publisher": "yourname",
     "version": "0.0.3",
-    "engines": { "vscode": "^1.90.0" },
-    "activationEvents": ["onCommand:projectStructure.generate"],
+    "engines": {
+        "vscode": "^1.90.0"
+    },
     "main": "extension.js",
     "contributes": {
-      "commands": [
-        { "command": "projectStructure.generate", "title": "Project Structure" }
-      ]
+        "commands": [
+            {
+                "command": "projectStructure.generate",
+                "title": "Project Structure"
+            }
+        ]
     },
-    "categories": ["Other"]
-  }
+    "categories": [
+        "Other"
+    ],
+    "description": "a vscode extension that creates a file in the root of your project <br> this file will be a tree structure of the files and directories in your project/repo <br> it will contain .gitignore but it will not include the files/folders in your .gitignore file",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/finnjclancy/project_structure.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/finnjclancy/project_structure/issues"
+    },
+    "homepage": "https://github.com/finnjclancy/project_structure#readme"
+}
