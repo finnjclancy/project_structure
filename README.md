@@ -1,9 +1,6 @@
 # what is this? <br>
-- a vscode extension that creates a file in the root of your project <br>
-- this file will contain a tree structure of the files and directories in your project/repo <br>
-- the .txt will include .gitignore but it will not include the files/folders in your .gitignore file <br>
-- directories come first sorted by alphabetical order <br>
-- files come after sorted by alphabetical order <br>
+- a vscode extension that creates an tree structre of your repo <br>
+- all files/directories in .gitignore will not be printed 
 
 ## install guide: <br>
 
@@ -27,3 +24,9 @@
 - press "CMD + SHIFT + P"
 - paste ">Project Structure"
 - select "Project Structure"
+
+### why i made this
+- wanted a fast way to give LLMs context of my repo structure
+
+### updated i wanna make
+- send file context to LLM and get a summary of that file
